@@ -5,8 +5,9 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
   xmlns:uap18="http://schemas.microsoft.com/appx/manifest/uap/windows10/18"
-  IgnorableNamespaces="uap mp rescap uap18">
+  IgnorableNamespaces="uap mp rescap uap10 uap18">
 
   <Identity
     Name="e90d0cd0-c131-43e4-ab97-68e4b5ffc500"
@@ -32,7 +33,23 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="Windows.FullTrustApplication" uap18:EntryPoint="Isolated.App" uap18:TrustLevel="appContainer" uap18:RuntimeBehavior="appSilo">
+      EntryPoint="Windows.PartialTrustApplication" uap18:EntryPoint="Isolated.App" uap18:TrustLevel="appContainer" uap18:RuntimeBehavior="appSilo">
+    <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+            <uap:FileTypeAssociation Name="yourappdocuments">
+                <uap:DisplayName>Your App Documents</uap:DisplayName>
+                <uap:Logo>Assets\FileIcon.png</uap:Logo>
+                <uap:InfoTip>Your App Document Files</uap:InfoTip>
+                <uap:SupportedFileTypes>
+                    <uap:FileType ContentType="text/plain">.txt</uap:FileType>
+                    <uap:FileType ContentType="application/pdf">.pdf</uap:FileType>
+                    <uap:FileType ContentType="image/jpeg">.jpg</uap:FileType>
+                    <uap:FileType ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document">.docx</uap:FileType>
+                    <!-- Add more file types as needed -->
+                </uap:SupportedFileTypes>
+            </uap:FileTypeAssociation>
+        </uap:Extension>
+    </Extensions>
       <uap:VisualElements
         DisplayName="WpfPackaged.AppContainer"
         Description="WpfPackaged.AppContainer"
@@ -44,8 +61,11 @@
       </uap:VisualElements>
     </Application>
   </Applications>
-
   <Capabilities>
-    <Capability Name="internetClient" />
+      <rescap:Capability Name="isolatedWin32"/>
+      <rescap:Capability Name="broadFileSystemAccess"/>
+      <uap:Capability Name="picturesLibrary"/>
+      <uap:Capability Name="documentsLibrary"/>
+      <Capability Name="internetClient"/>
   </Capabilities>
 </Package>

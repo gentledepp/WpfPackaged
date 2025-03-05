@@ -25,10 +25,17 @@ public partial class MainWindow : Window
     {
         // Configure open file dialog box
         Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-        dlg.FileName = "Document"; // Default file name
-        dlg.DefaultExt = ".txt"; // Default file extension
-        dlg.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
 
+        // Set initial directory to a location the app has permission to access
+        // This could be the app's local folder, or a user library the app has permission for
+        string initialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        dlg.InitialDirectory = initialDirectory;
+
+        dlg.DefaultExt = ".jpg"; // Default file extension
+        dlg.Filter = "Images (.jpg)|*.jpg"; // Filter files by extension
+        dlg.CheckFileExists = true;
+        dlg.Multiselect = false;
+        
         // Show open file dialog box
         Nullable<bool> result = dlg.ShowDialog();
 
@@ -37,6 +44,8 @@ public partial class MainWindow : Window
         {
             // Open document
             FileNameBlock.Text  = dlg.FileName;
+
+            //using var ms = dlg.OpenFile();
         }
 
     }
